@@ -1,0 +1,5 @@
+What happens if you apply pagination after materializing the query with .ToList()? Why is this
+problematic for large datasets?
+
+If we call .ToList() first, the entire result set is loaded from the database into application memory before we slice it. For large tables this uses a lot of RAM, is slow, and can crash the process.
+Correct approach: apply .Skip() and .Take() on the IQueryable and only then call .ToList(), so only the page subset is transferred to the app.
