@@ -1,7 +1,4 @@
-﻿// Tema_CSharp9_Complexa.pdf
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 

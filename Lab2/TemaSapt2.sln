@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemaSapt2", "TemaSapt2.csproj", "{8CDE85C1-849E-4BAB-A1B3-DA691C204462}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CDE85C1-849E-4BAB-A1B3-DA691C204462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CDE85C1-849E-4BAB-A1B3-DA691C204462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CDE85C1-849E-4BAB-A1B3-DA691C204462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CDE85C1-849E-4BAB-A1B3-DA691C204462}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
