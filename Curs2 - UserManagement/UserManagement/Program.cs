@@ -1,6 +1,8 @@
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using UserManagement.Features.Users;
 using UserManagement.Persistence;
 using UserManagement.Validators;
@@ -18,6 +20,23 @@ builder.Services.AddScoped<GetAllUsersHandler>();
 builder.Services.AddScoped<DeleteUserHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc(
+        "v1",
+        new Microsoft.OpenApi.Models.OpenApiInfo
+        {
+            Title = "UserManagement.Features.Users",
+            Version = "v1",
+            Description = "API for managing users",
+            Contact = new Microsoft.OpenApi.Models.OpenApiContact
+            {
+                Name = "API Support",
+                Email = "support@example.com"
+            }
+        }); 
+});
+
 var app = builder.Build();
 
 //Ensure database is created at runtime
@@ -30,6 +49,14 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI(
+        c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Management API V1");
+            c.RoutePrefix = string.Empty; // Set Swagger UI at app's root
+            c.DisplayRequestDuration();
+        }); 
     app.MapOpenApi();
 }
 
