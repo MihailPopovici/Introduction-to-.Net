@@ -1,4 +1,4 @@
-﻿namespace OrderManagement.Features;
+﻿namespace OrderManagement.Features.Orders;
 
 public class Order
 {
@@ -12,6 +12,9 @@ public class Order
     public string? CoverImageUrl { get; set; }
     public bool IsAvailable { get; set; }
     public int StockQuantity { get; set; } = 0;
+    
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public Order()
     {

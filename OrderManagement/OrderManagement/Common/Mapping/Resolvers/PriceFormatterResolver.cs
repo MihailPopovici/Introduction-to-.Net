@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using AutoMapper;
 using OrderManagement.Features;
+using OrderManagement.Features.Orders;
 
 namespace OrderManagement.Common.Mapping.Resolvers;
 

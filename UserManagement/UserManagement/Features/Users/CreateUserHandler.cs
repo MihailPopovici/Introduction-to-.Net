@@ -9,12 +9,12 @@ public class CreateUserHandler(UserManagementContext context, ILogger<CreateUser
     {
         logger.LogInformation("Creating a new user with Name: {FullName} and Email: {Email}", request.Email, request.FullName);
         //Todo create a middleware for validation
-        var validator = new CreateUserValidator();
-        var validationResult = await validator.ValidateAsync(request);
-        if (!validationResult.IsValid)
-        { 
-            return Results.BadRequest(validationResult.Errors);
-        }
+        // var validator = new CreateUserValidator();
+        // var validationResult = await validator.ValidateAsync(request);
+        // if (!validationResult.IsValid)
+        // { 
+        //     return Results.BadRequest(validationResult.Errors);
+        // }
         var user = new User(Guid.NewGuid(), request.FullName, request.Email);
         context.Users.Add(user);
         await context.SaveChangesAsync();
