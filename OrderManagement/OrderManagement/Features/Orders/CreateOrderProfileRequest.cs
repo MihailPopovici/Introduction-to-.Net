@@ -1,6 +1,8 @@
-﻿namespace OrderManagement.Features;
+﻿using MediatR;
 
-public class CreateOrderProfileRequest
+namespace OrderManagement.Features.Orders;
+
+public class CreateOrderProfileRequest : IRequest<OrderProfileDTO>
 {
     public string Title { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;

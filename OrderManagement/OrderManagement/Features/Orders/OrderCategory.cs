@@ -1,4 +1,4 @@
-﻿namespace OrderManagement.Features;
+﻿namespace OrderManagement.Features.Orders;
 
 public enum OrderCategory
 {

@@ -1,41 +1,57 @@
+using FluentValidation;
+using MediatR;
+using Microsoft.OpenApi.Models;
+using OrderManagement.Common.Mapping;
+using OrderManagement.Common.Middleware;
+using OrderManagement.Features.Orders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddHttpContextAccessor();
+
+// Register AutoMapper profiles
+builder.Services.AddAutoMapper(typeof(OrderMappingProfile), typeof(AdvancedOrderMappingProfile));
+
+// Register validators
+builder.Services.AddScoped<CreateOrderProfileValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderProfileValidator>();
+
+builder.Services.AddMediatR(typeof(CreateOrderHandler).Assembly);
+
+// OpenAPI / Swagger (Swashbuckle)
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "OrderManagement API",
+        Version = "v1",
+        Description = "API for managing orders"
+    });
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<CorrelationMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderManagement API v1"));
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+// Orders endpoint - create order
+app.MapPost("/orders", async (IMediator mediator, CreateOrderProfileRequest request, CancellationToken ct) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast");
+    var result = await mediator.Send(request, ct);
+    return Results.Created($"/orders/{result.Id}", result);
+})
+.WithName("CreateOrder")
+.WithTags("Orders")
+.WithOpenApi();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
